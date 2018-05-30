@@ -1,19 +1,18 @@
 /*
-_transaction = { 
-    h: '0x67c29d874697e7065f58d18160e9d3e85cb4f621835b30ea86911052f64c31cb',
-    v: 28,
-    r: '0xd4e6a03ab13263a2813d4cf7d9a7429041fe938bb532109c0e7daf0f2df6bfc4',
-    s: '0x774d2e70f819f7c3f3a778d12c01115dcaf238ce1116f5b51c7fb47a5cea6e8f',
-    address: '0x14791697260E4c9A71f18484C9f997B308e59325',
-    wei: 33000000000000000000,
-    contractAddress: '0x28fb1aca4b64a6edff4d0287b81f0b2a2e75257b',
+_tx = { 
+    h: '0xdc019231b53c4879ab424b7b797a907f0f9a17a2f30459bc3c36d79b53b5e8e8',
+    v: 27,
+    r: '0xe0d000429b116156c62c31d846b204d4c4807b7227d730964271248575ac2688',
+    s: '0x128c960c2eb3e42e1c6d86ee40a19d44a39c78b4abba5987bffdd5909bd4bd5',
+    signerAddress: '0x14791697260E4c9A71f18484C9f997B308e59325',
+    contractAddress: '0x28fb1aca4b64a6edff4d0287b81f0b2a2e75251b',
+    wei: 3000000000000000000 
 }
 */
-
-
 const ethers = require('ethers')
 
-_tx = signTx('0x28fb1aca4b64a6edff4d0287b81f0b2a2e75251b', 3000000000000000000)
+// contractAddress, amountInWei
+_tx = signTx('0x038f160ad632409bfb18582241d9fd88c1a072ba', 30*1000000000000000000)
 console.log(_tx)
 const validTx = verifyTx(_tx)
 console.log(validTx)
