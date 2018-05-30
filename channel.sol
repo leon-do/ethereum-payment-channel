@@ -19,8 +19,8 @@ contract Channel {
         address signer;
         bytes32 proof;
         
-        // only address1 can close channel
-        // if (msg.sender != address1) revert();
+        // only address2 can close channel
+        // if (msg.sender != address2) revert();
         
         // get signer from signature
         signer = ecrecover(_h, _v, _r, _s);
@@ -49,4 +49,3 @@ contract Channel {
     }
 
 }
-

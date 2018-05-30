@@ -12,7 +12,7 @@ _tx = {
 const ethers = require('ethers')
 
 // contractAddress, amountInWei
-_tx = signTx('0x1526613135cbe54ee257c11dd17254328a774f4a', 30*1000000000000000000)
+_tx = signTx('0x692a70d2e424a56d2c6c27aa97d1a86395877b3a', 30*1000000000000000000)
 console.log(_tx)
 const validTx = verifyTx(_tx)
 console.log(validTx)
