@@ -42,8 +42,7 @@ contract Channel {
     }
 
     function ChannelTimeout() public {
-        if (startDate + channelTimeout > now)
-            revert();
+        if (startDate + channelTimeout > now) revert();
 
         selfdestruct(address1);
     }
