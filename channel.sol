@@ -4,11 +4,9 @@ contract Channel {
 
     address public channelSender;
     address public channelRecipient;
-        address public signer;
-        bytes32 public proof;
     uint public startDate;
     uint public channelTimeout;
-    mapping (bytes32 => address) signatures;
+    
     constructor(address _to, uint _timeout) payable public {
         channelRecipient = _to;
         channelSender = msg.sender;
@@ -18,7 +16,12 @@ contract Channel {
     }
 
     function CloseChannel(bytes32 _h, uint8 _v, bytes32 _r, bytes32 _s, uint _value) public {
-
+        address signer;
+        bytes32 proof;
+        
+        // only channelSender can close channel
+        // if (msg.sender != channelSender) revert();
+        
         // get signer from signature
         signer = ecrecover(_h, _v, _r, _s);
 
@@ -46,3 +49,4 @@ contract Channel {
     }
 
 }
+
