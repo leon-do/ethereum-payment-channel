@@ -25,9 +25,9 @@ contract Channel {
         signer = ecrecover(_h, _v, _r, _s);
 
         // signature is invalid, throw
-        if (signer != channelSender && signer != channelRecipient) revert();
-
-        // proof = I signed this contract with a value
+        if (signer != channelSender) revert();
+        
+        // proof = I signed this contract with a _value
         proof = keccak256(this, _value);
 
         // signature is valid but doesn't match the data provided
