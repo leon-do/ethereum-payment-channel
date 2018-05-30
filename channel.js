@@ -1,6 +1,6 @@
 const ethers = require('ethers')
 
-const signedMessage = signMessage('0x02992af1dd8140193b87d2ab620ca22f6e19f26c' ,33)
+const signedMessage = signMessage('0x28fb1aca4b64a6edff4d0287b81f0b2a2e75257b' ,33)
 console.log(signedMessage)
 
 function signMessage(_contractAddress, _amount) {
@@ -20,10 +20,3 @@ function signMessage(_contractAddress, _amount) {
 
     return { h, v, r, s, address, amount}
 }
-
-
-
-
-
-
-
