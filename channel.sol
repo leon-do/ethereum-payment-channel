@@ -8,15 +8,14 @@ contract Channel {
     address public channelRecipient;
     uint public startDate;
     uint public channelTimeout;
-    mapping (bytes32 => address) signatures;
 
-    function Channel(address to, uint timeout) payable {
+    function Channel(address _to, uint timeout) payable {
         // 0x14791697260E4c9A71f18484C9f997B308e59325
-        channelRecipient = to;
+        channelRecipient = _to;
         channelSender = msg.sender;
         startDate = now;
         // in seconds
-        channelTimeout = timeout;
+        channelTimeout = _timeout;
     }
 
     function CloseChannel(bytes32 _h, uint8 _v, bytes32 _r, bytes32 _s, uint _value){
@@ -51,4 +50,3 @@ contract Channel {
     }
 
 }
-
