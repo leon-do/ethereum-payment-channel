@@ -2,50 +2,50 @@ pragma solidity ^0.4.0;
 
 contract Channel {
 
-    address public channelSender;
-    address public channelRecipient;
+    address public address1;
+    address public address2;
     uint public startDate;
     uint public channelTimeout;
     
-    constructor(address _to, uint _timeout) payable public {
-        channelRecipient = _to;
-        channelSender = msg.sender;
+    constructor(address _toAddress, uint _timeout) payable public {
+        address1 = msg.sender;
+        address2 = _toAddress;
         startDate = now;
         // in seconds
         channelTimeout = _timeout;
     }
 
-    function CloseChannel(bytes32 _h, uint8 _v, bytes32 _r, bytes32 _s, uint _value) public {
+    function CloseChannel(bytes32 _h, uint8 _v, bytes32 _r, bytes32 _s, uint _wei) public {
         address signer;
         bytes32 proof;
         
-        // only channelSender can close channel
-        // if (msg.sender != channelSender) revert();
+        // only address1 can close channel
+        // if (msg.sender != address1) revert();
         
         // get signer from signature
         signer = ecrecover(_h, _v, _r, _s);
 
         // signature is invalid, throw
-        if (signer != channelRecipient) revert();
+        if (signer != address2) revert();
 
         // proof = I signed this contract with a value
-        proof = keccak256(this, _value);
+        proof = keccak256(this, _wei);
 
         // signature is valid but doesn't match the data provided
         if (proof != _h) revert();
 
         // send to recipient
-        channelRecipient.transfer(_value);
+        address2.transfer(_wei);
         
         // close channel
-        selfdestruct(channelSender);
+        selfdestruct(address1);
     }
 
     function ChannelTimeout() public {
         if (startDate + channelTimeout > now)
             revert();
 
-        selfdestruct(channelSender);
+        selfdestruct(address1);
     }
 
 }

@@ -35,10 +35,11 @@ function signTx(contractAddress, wei) {
 // returns true/false
 function verifyTx(_tx) {
     try {
-        const validSignature = ethers.SigningKey.recover(_tx.h, _tx.r, _tx.s, _tx.v - 27) === _tx.signerAddress
-        const validAmount = ethers.utils.solidityKeccak256(['address', 'int'], [_tx.contractAddress, _tx.wei.toString()])
-    
-        if (validSignature && validAmount) {
+        const signer = ethers.SigningKey.recover(_tx.h, _tx.r, _tx.s, _tx.v - 27)
+        const proof = ethers.utils.solidityKeccak256(['address', 'int'], [_tx.contractAddress, _tx.wei.toString()])
+
+        // verify correct signer and proof    
+        if (signer === _tx.signerAddress && proof === _tx.h) {
             return true
         } else {
             return false
