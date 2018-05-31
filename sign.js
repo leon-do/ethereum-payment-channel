@@ -12,7 +12,7 @@ _tx = {
 const ethers = require('ethers')
 
 // contractAddress, amountInWei
-_tx = signTx('0x692a70d2e424a56d2c6c27aa97d1a86395877b3a', 30*1000000000000000000)
+_tx = signTx('0x0dcd2f752394c41875e259e00bb44fd505297caf', 30*1000000000000000000)
 console.log(_tx)
 const validTx = verifyTx(_tx)
 console.log(validTx)
@@ -22,21 +22,24 @@ function signTx(contractAddress, wei) {
     const signingKey = new ethers.SigningKey(privateKey)
     const signerAddress = signingKey.address
 
+    const key = 'password'
+    const hashedKey =  ethers.utils.keccak256(ethers.utils.toUtf8Bytes(key))
+
     // hash message
-    const h = ethers.utils.solidityKeccak256(['address', 'int'], [contractAddress, wei.toString()])
+    const h = ethers.utils.solidityKeccak256(['address', 'int', 'bytes32'], [contractAddress, wei.toString(), hashedKey])
 
     // sign and split message: https://github.com/ethers-io/ethers.js/issues/85
     const {r, s, recoveryParam} = signingKey.signDigest(h)
     const v = 27 + recoveryParam
 
-    return { h, v, r, s, signerAddress, contractAddress, wei}
+    return { h, v, r, s, signerAddress, contractAddress, wei, key, hashedKey}
 }
 
 // returns true/false
 function verifyTx(_tx) {
     try {
         const signer = ethers.SigningKey.recover(_tx.h, _tx.r, _tx.s, _tx.v - 27)
-        const proof = ethers.utils.solidityKeccak256(['address', 'int'], [_tx.contractAddress, _tx.wei.toString()])
+        const proof = ethers.utils.solidityKeccak256(['address', 'int', 'bytes32'], [_tx.contractAddress, _tx.wei.toString(), _tx.hashedKey])
 
         // verify correct signer and proof    
         if (signer === _tx.signerAddress && proof === _tx.h) {

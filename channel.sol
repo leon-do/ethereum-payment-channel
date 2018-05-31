@@ -15,12 +15,15 @@ contract Channel {
         channelTimeout = _timeout;
     }
 
-    function CloseChannel(bytes32 _h, uint8 _v, bytes32 _r, bytes32 _s, uint _wei) public {
+    function CloseChannel(bytes32 _h, uint8 _v, bytes32 _r, bytes32 _s, uint _wei, string _key, bytes32 _hashedKey) public {
         address signer;
         bytes32 proof;
         
         // only address2 can close channel
         // if (msg.sender != address2) revert();
+
+        // check if key is correct
+        if (keccak256(_key) != hashedKey) revert();
         
         // get signer from signature
         signer = ecrecover(_h, _v, _r, _s);
@@ -29,7 +32,7 @@ contract Channel {
         if (signer != address2) revert();
 
         // proof = I signed this contract with a value
-        proof = keccak256(this, _wei);
+        proof = keccak256(this, _wei, _hashedKey);
 
         // signature is valid but doesn't match the data provided
         if (proof != _h) revert();
