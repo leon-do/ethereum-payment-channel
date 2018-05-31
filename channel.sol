@@ -22,8 +22,8 @@ contract Channel {
         // only address2 can close channel
         // if (msg.sender != address2) revert();
 
-        // check if key is correct
-        if (keccak256(_key) != hashedKey) revert();
+        // _key is invalid, throw
+        if (keccak256(_key) != _hashedKey) revert();
         
         // get signer from signature
         signer = ecrecover(_h, _v, _r, _s);
